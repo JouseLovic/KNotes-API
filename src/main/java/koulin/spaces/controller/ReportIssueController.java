@@ -50,7 +50,7 @@ public class ReportIssueController {
         return ResponseEntity.ok(ref);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/delete/{id}")
     public ResponseEntity<Boolean> deleteReport(@PathVariable Long id) {
         service.delete(id);
         return ResponseEntity.ok(true);
