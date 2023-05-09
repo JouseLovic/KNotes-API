@@ -6,12 +6,11 @@ import koulin.spaces.utils.translator.ShareTranslator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.LinkedList;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "/share")
+@RequestMapping(value = "/KNote/share")
 public class ShareController {
 
     @Autowired
@@ -23,49 +22,52 @@ public class ShareController {
     @Autowired
     private NoteService noteService;
 
-    @Autowired
-    private TemplateService templateService;
 
     @GetMapping("/all-receive/{id}")
-    public ResponseEntity<List<ShareTranslator>> getAllSharesReceive(@PathVariable Long id) {
+    public ResponseEntity<List<Share>> getAllSharesReceive(@PathVariable Long id) {
         List<Share> shares = shareService.getAllSharesReceiveByIdUser(id);
+        return ResponseEntity.ok(shares);
+        /*
         List<ShareTranslator> shareT = new LinkedList<>();
         for (Share share : shares) {
             List<Note> listNotes = noteService.getListFromIdNotes(share.getId_notes());
-            List<Template> listTemplates = templateService.getListFromIdTemplate(share.getId_templates());
             User userS = userService.getById(share.getIdUserSendIt());
             User userR = userService.getById(share.getIdUserReceiveIt());
-            shareT.add(new ShareTranslator(share.getId(), share.getMessage(), userR, userS, listNotes, listTemplates));
+            shareT.add(new ShareTranslator(share.getId(), share.getMessage(), userR, userS, listNotes));
         }
         if (shareT.isEmpty()) {
             return ResponseEntity.noContent().build();
         }
         return ResponseEntity.ok(shareT);
+         */
     }
 
 
-    @GetMapping("/all-sent/{id}")
-    public ResponseEntity<List<ShareTranslator>> getAllSharesSent(@PathVariable Long id) {
+    @GetMapping("/all-send/{id}")
+    public ResponseEntity<List<Share>> getAllSharesSent(@PathVariable Long id) {
         List<Share> shares = shareService.getAllSharesSendByIdUser(id);
+        return ResponseEntity.ok(shares);
+        /*
         List<ShareTranslator> shareT = new LinkedList<>();
         for (Share share : shares) {
             List<Note> listNotes = noteService.getListFromIdNotes(share.getId_notes());
-            List<Template> listTemplates = templateService.getListFromIdTemplate(share.getId_templates());
             User userS = userService.getById(share.getIdUserSendIt());
             User userR = userService.getById(share.getIdUserReceiveIt());
             shareT.add(new ShareTranslator(share.getId(), share.getMessage(),
-                    userR, userS, listNotes,
-                    listTemplates));
+                    userR, userS, listNotes));
         }
         if (shareT.isEmpty()) {
             return ResponseEntity.noContent().build();
         }
         return ResponseEntity.ok(shareT);
+         */
     }
 
     @PostMapping("/")
-    public ResponseEntity<ShareTranslator> shareNoteOrTemplate(@RequestBody Share share) {
+    public ResponseEntity<Share> shareNoteOrTemplate(@RequestBody Share share) {
         Share shared = shareService.shareNotesOrTemplates(share);
+        return ResponseEntity.ok(shared);
+        /*
         if (shared == null || shared.getMessage() == null) {
             return ResponseEntity.badRequest().build();
         }
@@ -76,6 +78,7 @@ public class ShareController {
         return ResponseEntity.ok(new ShareTranslator(shared.getId(), shared.getMessage(),
                 userR, userS, listNotes,
                 listTemplates));
+         */
     }
 
     @DeleteMapping("/{id}")

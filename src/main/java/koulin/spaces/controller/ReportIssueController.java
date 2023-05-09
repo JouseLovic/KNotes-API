@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "/issues")
+@RequestMapping(value = "/KNote/issues")
 public class ReportIssueController {
 
     @Autowired

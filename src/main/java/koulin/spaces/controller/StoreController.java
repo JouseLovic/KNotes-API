@@ -12,7 +12,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "/store")
+@RequestMapping(value = "/KNote/store")
 public class StoreController {
 
     @Autowired

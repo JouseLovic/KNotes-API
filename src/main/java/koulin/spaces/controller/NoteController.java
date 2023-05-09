@@ -4,12 +4,13 @@ import koulin.spaces.entities.Note;
 import koulin.spaces.services.NoteService;
 import koulin.spaces.services.UserService;
 import koulin.spaces.utils.translator.NoteRequest;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "/note")
+@RequestMapping(value = "/KNote/note")
 public class NoteController {
 
     private NoteService noteService;
@@ -55,11 +56,11 @@ public class NoteController {
 
     @PutMapping("/update/{id}")
     public ResponseEntity<Note> updateNote(@RequestBody Note note, @PathVariable Long id){
-        Note refN = noteService.update(note, id);
-        if(refN.getContent()==null || refN==null){
-            return ResponseEntity.notFound().build();
+        Note ref = noteService.update(note, id);
+        if(ref.getContent()==null || ref==null){
+            return ResponseEntity.badRequest().build();
         }
-        return ResponseEntity.ok(refN);
+        return ResponseEntity.ok(ref);
     }
 
     @DeleteMapping("/delete/{id}")

@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class NoteService implements ICrud<Note>, ISearch<Note> {
@@ -17,7 +18,7 @@ public class NoteService implements ICrud<Note>, ISearch<Note> {
     private INoteRepository repository;
 
     public List<Note> getAllNoteByUser(Long id) {
-        return repository.findAllNotes(id);
+        return repository.findAllNotesByIdUser(id);
     }
 
     public List<Note> getListFromIdNotes(List<Long> ids) {
@@ -47,10 +48,11 @@ public class NoteService implements ICrud<Note>, ISearch<Note> {
 
     @Override
     public Note update(Note note, Long id) {
-        return repository.updateNote(note.getId(),
-                note.getTitle(), note.getContent(),
-                note.getCreationDate(), note.getDateModification(),
-                note.isFavorite(), note.getLastScrollPosition());
+        Optional<Note> oldRef = repository.findById(id);
+        if(oldRef.isPresent() || !oldRef.isEmpty()){
+            return repository.save(note);
+        }
+        return new Note();
     }
 
     @Override

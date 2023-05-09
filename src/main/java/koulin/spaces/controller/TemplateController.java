@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "/template")
+@RequestMapping(value = "/KNote/template")
 public class TemplateController {
 
     @Autowired

@@ -17,6 +17,9 @@ public class Note {
     @Column(name = "id_user")
     private Long idUser;
 
+    @Column(nullable = true)
+    private Long id_folder;
+
     @Column
     private String title;
 
@@ -43,9 +46,10 @@ public class Note {
     public Note(Long id, String title, String content,
                 String creationDate, String dateModification,
                 boolean favorite, List<String> tag,
-                Double lastScrollPosition){
+                Double lastScrollPosition, Long id_folder){
         this.id = id;
         this.title = title;
+        this.id_folder = id_folder;
         this.content = content;
         this.creationDate = creationDate;
         this.dateModification = dateModification;

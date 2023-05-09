@@ -14,11 +14,7 @@ public class ShareService {
     private IShareRepository repository;
 
     public Share shareNotesOrTemplates(Share share) {
-        return repository.shareNotes(share.getMessage(),
-                share.getIdUserReceiveIt(),
-                share.getIdUserSendIt(),
-                share.getId_notes(),
-                share.getId_templates());
+        return repository.save(share);
     }
 
     public void deleteShared(Long id) {

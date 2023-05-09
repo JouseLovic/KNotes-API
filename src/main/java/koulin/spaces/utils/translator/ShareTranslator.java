@@ -20,15 +20,13 @@ public class ShareTranslator {
 
     private User userReceive;
     private List<Note> listNotes;
-    private List<Template> listTemplates;
 
-    public ShareTranslator(Long id, String message, User userReceive, User userSend, List<Note> listNotes, List<Template> listTemplates) {
+    public ShareTranslator(Long id, String message, User userReceive, User userSend, List<Note> listNotes) {
         this.id = id;
         this.message = message;
         this.userSend = userSend;
         this.userReceive = userReceive;
         this.listNotes = listNotes;
-        this.listTemplates = listTemplates;
     }
 
     public ShareTranslator(){}
