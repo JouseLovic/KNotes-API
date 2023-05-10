@@ -20,13 +20,13 @@ public class Folder {
     @Column(nullable = false)
     private String name;
 
-    @Column
+    @Column(nullable = true, length = 200)
     private String description;
 
-    @Column
+    @Column(nullable = false)
     private boolean pinned;
 
-    @Column
+    @Column(nullable = true, length = 8)
     private String password;
 
     @Column(nullable = false, name = "creation_date")
@@ -43,4 +43,8 @@ public class Folder {
     }
 
     public Folder(){}
+
+    public boolean isFullEmpty(){
+        return id == null || id <= 0 || name == null || creationDate.equals("") || creationDate.isEmpty() || id_user == null || id_user <= 0;
+    }
 }

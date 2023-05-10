@@ -21,11 +21,11 @@ public interface INoteRepository extends JpaRepository<Note, Long> {
     @Query(value = "SELECT * FROM Note n WHERE n.id_user = ?1", nativeQuery = true)
     public List<Note> findAllNotesByIdUser(Long id);
 
-    @Query(value = "SELECT * FROM Note n WHERE n.id_user = ?1 and n.id_folder = ?2", nativeQuery = true)
-    public List<Note> findAllNotesByFolderId(Long id_user, Long id_folder);
+    @Query(value = "SELECT * FROM Note n WHERE n.id_folder = ?1", nativeQuery = true)
+    public List<Note> findAllNotesByFolderId(Long id_folder);
 
     @Modifying
     @Transactional
     @Query(value = "DELETE FROM Note n WHERE n.id_folder = ?1", nativeQuery = true)
-    public void deleteAllNotesByFolderId(Long id_folder);
+    public Integer deleteAllNotesByFolderId(Long id_folder);
 }

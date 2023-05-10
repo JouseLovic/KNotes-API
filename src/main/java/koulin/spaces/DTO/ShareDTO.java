@@ -1,7 +1,6 @@
-package koulin.spaces.utils.translator;
+package koulin.spaces.DTO;
 
 import koulin.spaces.entities.Note;
-import koulin.spaces.entities.Template;
 import koulin.spaces.entities.User;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -13,7 +12,7 @@ import java.util.List;
 @Getter
 @Setter
 @EqualsAndHashCode
-public class ShareTranslator {
+public class ShareDTO {
     private Long id;
     private String message;
     private User userSend;
@@ -21,7 +20,7 @@ public class ShareTranslator {
     private User userReceive;
     private List<Note> listNotes;
 
-    public ShareTranslator(Long id, String message, User userReceive, User userSend, List<Note> listNotes) {
+    public ShareDTO(Long id, String message, User userReceive, User userSend, List<Note> listNotes) {
         this.id = id;
         this.message = message;
         this.userSend = userSend;
@@ -29,6 +28,6 @@ public class ShareTranslator {
         this.listNotes = listNotes;
     }
 
-    public ShareTranslator(){}
+    public ShareDTO(){}
 
 }

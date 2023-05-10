@@ -6,7 +6,6 @@ import koulin.spaces.interfaces.ISearch;
 import koulin.spaces.repository.INoteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
@@ -19,6 +18,22 @@ public class NoteService implements ICrud<Note>, ISearch<Note> {
 
     public List<Note> getAllNoteByUser(Long id) {
         return repository.findAllNotesByIdUser(id);
+    }
+
+    public List<Note> findAllNotesByIdFolder(Long id_folder){
+        List<Note> notes = repository.findAllNotesByFolderId(id_folder);
+        if(notes.isEmpty())
+            return new LinkedList<Note>();
+        return notes;
+    }
+
+    public boolean deleteAllNotesPerFolder(Long id_folder){
+        int error = repository.deleteAllNotesByFolderId(id_folder);
+        System.out.println(error);
+        if(error==1){
+            return true;
+        }
+        return false;
     }
 
     public List<Note> getListFromIdNotes(List<Long> ids) {

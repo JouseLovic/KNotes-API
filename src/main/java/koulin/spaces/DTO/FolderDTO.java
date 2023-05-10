@@ -1,17 +1,13 @@
-package koulin.spaces.utils.translator;
+package koulin.spaces.DTO;
 
 import koulin.spaces.entities.Note;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
-
-import java.util.Date;
+import lombok.*;
 import java.util.List;
 
 @Getter
 @Setter
 @EqualsAndHashCode
-public class FolderTranslation {
+public class FolderDTO {
     private Long id;
 
     private Long id_user;
@@ -24,7 +20,7 @@ public class FolderTranslation {
 
     private List<Note> notes;
 
-    public FolderTranslation(Long id, Long id_user, String name, String description, String createDate, boolean pinned, String password, List<Note> notes) {
+    public FolderDTO(Long id, Long id_user, String name, String description, String createDate, boolean pinned, String password, List<Note> notes) {
         this.id = id;
         this.id_user = id_user;
         this.name = name;

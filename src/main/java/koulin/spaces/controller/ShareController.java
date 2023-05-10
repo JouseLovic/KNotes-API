@@ -2,11 +2,10 @@ package koulin.spaces.controller;
 
 import koulin.spaces.entities.*;
 import koulin.spaces.services.*;
-import koulin.spaces.utils.translator.ShareTranslator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import java.util.LinkedList;
+
 import java.util.List;
 
 @RestController
