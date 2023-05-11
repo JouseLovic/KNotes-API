@@ -10,8 +10,9 @@ import java.util.List;
 
 @Repository
 public interface INoteRepository extends JpaRepository<Note, Long> {
-    @Query(value = "SELECT * FROM Note n WHERE n.title like %?1% or n.content like %?1%", nativeQuery = true)
-    public List<Note> searchNoteByWords(String search);
+
+    @Query(value = "SELECT * FROM Note n WHERE (LOWER(n.title) LIKE %?1% OR LOWER(n.content) LIKE %?1%) AND n.id_user = ?2", nativeQuery = true)
+    public List<Note> searchNoteByWords(String search, Long idUser);
 
     @Modifying
     @Transactional
@@ -28,4 +29,5 @@ public interface INoteRepository extends JpaRepository<Note, Long> {
     @Transactional
     @Query(value = "DELETE FROM Note n WHERE n.id_folder = ?1", nativeQuery = true)
     public Integer deleteAllNotesByFolderId(Long id_folder);
+
 }

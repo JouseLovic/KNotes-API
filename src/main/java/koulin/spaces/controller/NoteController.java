@@ -3,7 +3,6 @@ package koulin.spaces.controller;
 import koulin.spaces.entities.Note;
 import koulin.spaces.services.NoteService;
 import koulin.spaces.services.UserService;
-import koulin.spaces.utils.translator.NoteRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,55 +19,63 @@ public class NoteController {
     @Autowired
     private UserService userService;
 
-    @GetMapping("/user")
-    public ResponseEntity<List<Note>> getAllNotesByUser(@RequestBody NoteRequest request) {
-        boolean result = userService.existUser(request.getId());
+    @GetMapping("/user/{id}")
+    public ResponseEntity<List<Note>> getAllNotesByUser(@PathVariable Long id) {
+        boolean result = userService.existUser(id);
         if (!result) {
             System.out.println("User not found. Please, try again with other id");
             return ResponseEntity.notFound().build();
         }
-        List<Note> notes = noteService.getAllNoteByUser(request.getId());
+        List<Note> notes = noteService.getAllNoteByUser(id);
         return ResponseEntity.ok(notes);
     }
 
-    @GetMapping("/search/{text}")
-    public ResponseEntity<List<Note>> searchNote(@PathVariable String text){
-        List<Note> listNotes = noteService.search(text);
-        if(listNotes.isEmpty()){
+    @GetMapping("/search/{text}/{id_user}")
+    public ResponseEntity<List<Note>> searchNote(@PathVariable String text, @PathVariable Long id_user) {
+        List<Note> listNotes = noteService.search(text.toLowerCase(), id_user);
+        if (listNotes.isEmpty()) {
+            System.out.println("Note not found. Please try again with the different text that: " + text);
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(listNotes);
     }
 
     @PostMapping("/create")
-    public ResponseEntity<Note> createNote(@RequestBody Note note){
+    public ResponseEntity<Note> createNote(@RequestBody Note note) {
         Note refN = noteService.create(note);
-        if(refN.getContent()==null || refN==null){
-           return ResponseEntity.badRequest().build();
+        if (refN.isFullEmpty()) {
+            return ResponseEntity.badRequest().build();
         }
         return ResponseEntity.ok(refN);
     }
 
     @PostMapping("/create-several-note")
-    public ResponseEntity<List<Note>> createSeveralNotes(@RequestBody List<Note> note){
-       List<Note> listNotes = noteService.createSomeNotes(note);
-       if(listNotes.isEmpty()){
-           return ResponseEntity.badRequest().build();
-       }
-       return ResponseEntity.ok(listNotes);
+    public ResponseEntity<List<Note>> createSeveralNotes(@RequestBody List<Note> note) {
+        List<Note> listNotes = noteService.createSomeNotes(note);
+        if (listNotes.isEmpty()) {
+            return ResponseEntity.badRequest().build();
+        }
+        return ResponseEntity.ok(listNotes);
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<Note> updateNote(@RequestBody Note note, @PathVariable Long id){
+    public ResponseEntity<Note> updateNote(@RequestBody Note note, @PathVariable Long id) {
         Note ref = noteService.update(note, id);
-        if(ref.getContent()==null || ref==null){
+        if (ref.isFullEmpty()) {
+            System.out.println("A error has ocurrerd. Please, try again");
             return ResponseEntity.badRequest().build();
         }
         return ResponseEntity.ok(ref);
     }
 
+   /* @DeleteMapping("/delete-some-notes")
+    public ResponseEntity<Boolean> deleteSomeNotes(@RequestBody List<Note> note){
+       final boolean hasError = noteService.deleteSomeNOtes(note);
+       return ResponseEntity.ok(hasError);
+    } */
+
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<Boolean> deleteNote(@PathVariable Long id){
+    public ResponseEntity<Boolean> deleteNote(@PathVariable Long id) {
         noteService.delete(id);
         return ResponseEntity.ok(true);
     }

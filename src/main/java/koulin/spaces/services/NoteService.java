@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class NoteService implements ICrud<Note>, ISearch<Note> {
+public class NoteService implements ICrud<Note>{
 
     @Autowired
     private INoteRepository repository;
@@ -20,17 +20,17 @@ public class NoteService implements ICrud<Note>, ISearch<Note> {
         return repository.findAllNotesByIdUser(id);
     }
 
-    public List<Note> findAllNotesByIdFolder(Long id_folder){
+    public List<Note> findAllNotesByIdFolder(Long id_folder) {
         List<Note> notes = repository.findAllNotesByFolderId(id_folder);
-        if(notes.isEmpty())
+        if (notes.isEmpty())
             return new LinkedList<Note>();
         return notes;
     }
 
-    public boolean deleteAllNotesPerFolder(Long id_folder){
+    public boolean deleteAllNotesPerFolder(Long id_folder) {
         int error = repository.deleteAllNotesByFolderId(id_folder);
         System.out.println(error);
-        if(error==1){
+        if (error == 1) {
             return true;
         }
         return false;
@@ -47,13 +47,20 @@ public class NoteService implements ICrud<Note>, ISearch<Note> {
         return auxList;
     }
 
-    public boolean existNote(Long id){
+    public boolean existNote(Long id) {
         var user = repository.findById(id);
         return user.isPresent();
     }
 
     public List<Note> createSomeNotes(List<Note> note) {
         return repository.saveAll(note);
+    }
+
+    public boolean deleteSomeNOtes(List<Note> notes) {
+        for (var nt : notes) {
+            delete(nt.getId());
+        }
+        return true;
     }
 
     @Override
@@ -64,7 +71,7 @@ public class NoteService implements ICrud<Note>, ISearch<Note> {
     @Override
     public Note update(Note note, Long id) {
         Optional<Note> oldRef = repository.findById(id);
-        if(oldRef.isPresent() || !oldRef.isEmpty()){
+        if (oldRef.isPresent() || !oldRef.isEmpty()) {
             return repository.save(note);
         }
         return new Note();
@@ -80,8 +87,7 @@ public class NoteService implements ICrud<Note>, ISearch<Note> {
         return repository.findById(id).orElseThrow();
     }
 
-    @Override
-    public List<Note> search(String search) {
-        return repository.searchNoteByWords(search);
+    public List<Note> search(String search, Long idUser) {
+        return repository.searchNoteByWords(search, idUser);
     }
 }

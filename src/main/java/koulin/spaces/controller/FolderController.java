@@ -8,10 +8,8 @@ import koulin.spaces.services.NoteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.LinkedList;
 import java.util.List;
-import java.util.logging.Logger;
 
 @RestController
 @RequestMapping(value = "/KNote/folder")
