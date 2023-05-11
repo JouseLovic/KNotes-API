@@ -1,5 +1,6 @@
 package koulin.spaces.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import java.util.List;
@@ -41,6 +42,12 @@ public class User {
         this.avatar = avatar;
         this.typeUser = typeUser;
         this.ban = typeBan;
+    }
+
+    @Transient
+    @JsonIgnore
+    public boolean isFullEmpty(){
+        return id == null || pass.trim().equals("") || typeUser.trim().equals("") || email.trim().equals("");
     }
 
     public User() {

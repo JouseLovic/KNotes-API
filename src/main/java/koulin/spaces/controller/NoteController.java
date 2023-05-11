@@ -4,6 +4,7 @@ import koulin.spaces.entities.Note;
 import koulin.spaces.services.NoteService;
 import koulin.spaces.services.UserService;
 import koulin.spaces.utils.translator.NoteRequest;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,7 +14,10 @@ import java.util.List;
 @RequestMapping(value = "/KNote/note")
 public class NoteController {
 
+    @Autowired
     private NoteService noteService;
+
+    @Autowired
     private UserService userService;
 
     @GetMapping("/user")

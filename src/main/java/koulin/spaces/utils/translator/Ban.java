@@ -9,6 +9,5 @@ import java.util.List;
 @EqualsAndHashCode
 public class Ban {
     private Long id;
-    private String typeUser;
     private List<String> ban;
 }

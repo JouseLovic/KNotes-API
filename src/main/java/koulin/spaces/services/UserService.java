@@ -8,6 +8,9 @@ import koulin.spaces.utils.translator.Desban;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.Optional;
+
 @Service
 public class UserService implements ICrud<User> {
 
@@ -21,14 +24,18 @@ public class UserService implements ICrud<User> {
 
     @Override
     public User update(User user, Long id) {
-        User ref = repository.findById(id).orElseThrow();
-        ref.setUsername(user.getUsername());
-        ref.setTypeUser(user.getTypeUser());
-        ref.setEmail(user.getEmail());
-        ref.setBan(user.getBan());
-        ref.setAvatar(user.getAvatar());
-        ref.setPass(user.getPass());
-        return repository.save(ref);
+        Optional<User> ref = repository.findById(id);
+        if (ref.isPresent()) {
+            var userRef = getById(id);
+            userRef.setEmail(user.getEmail());
+            userRef.setAvatar(user.getAvatar());
+            userRef.setTypeUser(user.getTypeUser());
+            userRef.setBan(user.getBan());
+            userRef.setUsername(user.getUsername());
+            userRef.setPass(user.getPass());
+            return repository.save(userRef);
+        }
+        return new User();
     }
 
     @Override
@@ -36,11 +43,11 @@ public class UserService implements ICrud<User> {
         repository.deleteById(id);
     }
 
-    public User getUserByEmail(String email){
+    public List<User> getUserByEmail(String email) {
         return repository.getUserByEmail(email);
     }
 
-    public User getUserByUsername(String username){
+    public List<User> getUserByUsername(String username) {
         return repository.getUserByUsername(username);
     }
 
@@ -50,16 +57,26 @@ public class UserService implements ICrud<User> {
         return ref.orElseThrow();
     }
 
-    public Boolean existUser(Long id){
+    public Boolean existUser(Long id) {
         var user = repository.findById(id);
         return user.isPresent();
     }
 
     public User banUser(Ban ban) {
-        return repository.banUser(ban.getId(), ban.getBan(), "banned");
+        String[] arrayBans = ban.getBan().toArray(new String[0]);
+        int error = repository.banUser(ban.getId(), arrayBans, "banned");
+        if (error >= 1) {
+            return getById(ban.getId());
+        }
+        return new User();
     }
 
     public User desBanUser(Desban desBanned) {
-        return repository.desBanUser(desBanned.getId(), desBanned.getDesban(), desBanned.getTypeUser());
+        String[] arrayBans = desBanned.getDesban().toArray(new String[0]);
+        int error = repository.desBanUser(desBanned.getId(), arrayBans, desBanned.getTypeUser());
+        if (error >= 1) {
+            return getById(desBanned.getId());
+        }
+        return new User();
     }
 }
